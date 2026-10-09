@@ -41,7 +41,11 @@ export default async function PokemonDetailPage({ params }: PokemonDetailPagePro
 
   return (
     <Container className="py-10">
-      <Link href="/pokemon" className="text-sm text-content-muted hover:text-content">
+      <Link
+        prefetch={false}
+        href="/pokemon"
+        className="text-sm text-content-muted hover:text-content"
+      >
         ← Back to Pokemon
       </Link>
 

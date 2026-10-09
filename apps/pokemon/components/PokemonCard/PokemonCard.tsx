@@ -12,7 +12,7 @@ export type PokemonCardProps = {
 
 export function PokemonCard({ pokemon }: PokemonCardProps) {
   return (
-    <Link href={`/pokemon/${pokemon.name}`} prefetch className="group block h-full">
+    <Link prefetch={false} href={`/pokemon/${pokemon.name}`} className="group block h-full">
       <Card className="relative flex h-full flex-col items-center gap-3 text-center transition group-hover:-translate-y-0.5 group-hover:border-brand-300 group-hover:shadow-md">
         {pokemon.origin === 'custom' ? (
           <Badge tone="brand" className="absolute right-3 top-3">

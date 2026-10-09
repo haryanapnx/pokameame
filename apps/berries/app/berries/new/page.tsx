@@ -9,7 +9,11 @@ export const metadata = { title: 'Add a berry' }
 export default function NewBerryPage() {
   return (
     <Container className="py-10">
-      <Link href="/berries" className="text-sm text-content-muted hover:text-content">
+      <Link
+        prefetch={false}
+        href="/berries"
+        className="text-sm text-content-muted hover:text-content"
+      >
         ← Back to berries
       </Link>
 

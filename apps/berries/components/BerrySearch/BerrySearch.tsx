@@ -102,6 +102,7 @@ export function BerrySearch({ initialQuery = '' }: BerrySearchProps) {
             {items.map((suggestion) => (
               <li key={`${suggestion.origin}-${suggestion.name}`}>
                 <Link
+                  prefetch={false}
                   href={`/berries/${suggestion.name}`}
                   className="flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-sm capitalize transition hover:bg-indigo-50"
                 >
@@ -115,6 +116,7 @@ export function BerrySearch({ initialQuery = '' }: BerrySearchProps) {
       </div>
 
       <Link
+        prefetch={false}
         href="/berries/new"
         className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-semibold text-white shadow-[0_8px_18px_rgba(79,70,229,0.22)] transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200 active:translate-y-px"
       >

@@ -36,7 +36,11 @@ export default async function BerryDetailPage({ params }: BerryDetailPageProps) 
 
   return (
     <Container className="py-10">
-      <Link href="/berries" className="text-sm text-content-muted hover:text-content">
+      <Link
+        prefetch={false}
+        href="/berries"
+        className="text-sm text-content-muted hover:text-content"
+      >
         ← Back to berries
       </Link>
 

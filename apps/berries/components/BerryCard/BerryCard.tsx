@@ -9,7 +9,7 @@ export type BerryCardProps = {
 
 export function BerryCard({ berry }: BerryCardProps) {
   return (
-    <Link href={`/berries/${berry.name}`} prefetch className="group block h-full">
+    <Link prefetch={false} href={`/berries/${berry.name}`} className="group block h-full">
       <Card className="relative flex h-full flex-col items-center gap-2 text-center transition group-hover:-translate-y-0.5 group-hover:border-brand-300 group-hover:shadow-md">
         <span className="text-2xs text-content-muted tabular-nums">{formatId(berry.id)}</span>
 

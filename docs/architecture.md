@@ -234,6 +234,10 @@ Packages with Testing Library tests must declare `@testing-library/react`, `@tes
   rebuild.
 - **Detail routes need a Suspense boundary.** In Next 16, accessing `params` outside `<Suspense>` logs "encountered URL
   data during prerendering"; each detail segment ships a `loading.tsx` that provides it.
+- **Prefetch is disabled inside the zones** (`<Link prefetch={false}>`). With `cacheComponents` + `partialPrefetching`
+  and the shell's `rewrites()` in front, Next 16 issues segment-prefetch (`_rsc`) requests for the wrong segment path
+  and every link logs a 404 — an open upstream bug ([next.js#97244](https://github.com/vercel/next.js/issues/97244))
+  whose only documented workaround is turning prefetch off. Navigation is unaffected.
 - **Docker / Compose:** ports 3000-3002 plus **55432** (the container Postgres) must be free. Dependencies live in the
   image rather than on the host, so after a dependency change run
   `docker compose build && docker compose up --renew-anon-volumes`. File watching across the bind mount is verified

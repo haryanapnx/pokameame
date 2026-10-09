@@ -9,7 +9,7 @@ export default function NotFound() {
         title="Pokemon not found"
         description="We could not find that Pokemon. It may have been removed, or the name is misspelled."
         action={
-          <Link href="/pokemon" className={buttonClasses()}>
+          <Link prefetch={false} href="/pokemon" className={buttonClasses()}>
             Back to the list
           </Link>
         }

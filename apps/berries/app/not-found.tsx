@@ -9,7 +9,7 @@ export default function NotFound() {
         title="Berry not found"
         description="We could not find that berry. It may have been removed, or the name is misspelled."
         action={
-          <Link href="/berries" className={buttonClasses()}>
+          <Link prefetch={false} href="/berries" className={buttonClasses()}>
             Back to the list
           </Link>
         }
