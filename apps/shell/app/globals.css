@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+@import '@poke/ui/theme.css';
+
+/* Tailwind ignores node_modules, and @poke/ui resolves through it — register its source so
+   the design-system classes are emitted. */
+@source '../../../packages/ui/src';
