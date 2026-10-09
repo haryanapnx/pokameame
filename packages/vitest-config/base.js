@@ -1,7 +1,11 @@
+import { fileURLToPath } from 'node:url'
+
 // Vitest normally sets NODE_ENV=test, but if the shell exports NODE_ENV=production
 // it is left untouched — React then loads its production build, which omits `act`,
 // breaking Testing Library. Force the correct test environment here, before workers spawn.
 process.env.NODE_ENV = 'test'
+
+const serverOnlyStub = fileURLToPath(new URL('./empty.js', import.meta.url))
 
 export const baseTestConfig = {
   globals: true,
@@ -28,6 +32,14 @@ export const baseTestConfig = {
   },
 }
 
+/**
+ * `server-only` throws when imported outside a React Server environment; tests run in
+ * plain Node, so alias it to an empty module. The guard still applies in Next builds.
+ */
+export const baseResolveConfig = {
+  alias: { 'server-only': serverOnlyStub },
+}
+
 export function baseConfig(overrides = {}) {
-  return { test: { ...baseTestConfig, ...overrides } }
+  return { resolve: { ...baseResolveConfig }, test: { ...baseTestConfig, ...overrides } }
 }
