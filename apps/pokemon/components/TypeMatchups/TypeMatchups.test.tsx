@@ -15,9 +15,9 @@ const matchups: DefensiveMatchups = {
 
 describe('formatTypeMultiplier', () => {
   it('renders common fractions', () => {
-    expect(formatTypeMultiplier(0.5)).toBe('½')
-    expect(formatTypeMultiplier(0.25)).toBe('¼')
-    expect(formatTypeMultiplier(0.125)).toBe('⅛')
+    expect(formatTypeMultiplier(0.5)).toBe('1/2')
+    expect(formatTypeMultiplier(0.25)).toBe('1/4')
+    expect(formatTypeMultiplier(0.125)).toBe('1/8')
   })
 
   it('renders whole numbers as-is', () => {
@@ -35,10 +35,10 @@ describe('TypeMatchups', () => {
     expect(screen.getByText('Immune to')).toBeInTheDocument()
 
     expect(screen.getByText('fire')).toBeInTheDocument()
-    expect(screen.getByText('×4')).toBeInTheDocument()
-    expect(screen.queryByText('×½')).not.toBeInTheDocument()
-    expect(screen.getByText('×¼')).toBeInTheDocument()
-    expect(screen.getByText('×0')).toBeInTheDocument()
+    expect(screen.getByText('x4')).toBeInTheDocument()
+    expect(screen.queryByText('x1/2')).not.toBeInTheDocument()
+    expect(screen.getByText('x1/4')).toBeInTheDocument()
+    expect(screen.getByText('x0')).toBeInTheDocument()
   })
 
   it('omits empty groups', () => {

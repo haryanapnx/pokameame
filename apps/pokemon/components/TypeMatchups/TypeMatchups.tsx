@@ -7,7 +7,7 @@ export type TypeMatchupsProps = {
 
 /** `0.25` → `1/4`, `2` → `2`. */
 export function formatTypeMultiplier(multiplier: number): string {
-  if (multiplier === 0.5) return '1/2' 
+  if (multiplier === 0.5) return '1/2'
   if (multiplier === 0.25) return '1/4'
   if (multiplier === 0.125) return '1/8'
   return String(multiplier)

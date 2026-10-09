@@ -1,4 +1,3 @@
-
 export function buildPokemonListHref(page: number, query?: string): string {
   const params = new URLSearchParams()
   const term = query?.trim()
