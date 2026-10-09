@@ -21,13 +21,38 @@ function stripTrailingSlash(value: string): string {
   return value.replace(/\/+$/, '')
 }
 
+/**
+ * Zone URLs must be origins: the rewrite table below appends `/pokemon` / `/berries` itself, so a value that already
+ * carries the path would resolve to `/pokemon/pokemon`. Catch that at build time with a readable message instead of
+ * shipping a 404.
+ */
+function normalizeZoneUrl(value: string, variable: string): string {
+  const url = stripTrailingSlash(value)
+
+  let pathname: string
+  try {
+    pathname = new URL(url).pathname
+  } catch {
+    throw new Error(`${variable} must be an absolute URL, e.g. https://pokemon.example.com`)
+  }
+
+  if (pathname !== '/' && pathname !== '') {
+    throw new Error(
+      `${variable} must be the zone's origin only — drop "${pathname}". ` +
+        'The shell already appends /pokemon and /berries when it proxies.',
+    )
+  }
+
+  return url
+}
+
 /** Resolves each zone's upstream URL, falling back to the local dev ports. */
 export function resolveZoneRoutes(
   env: Record<string, string | undefined> = process.env,
 ): ZoneRoutes {
   return {
-    pokemon: stripTrailingSlash(env.POKEMON_ZONE_URL ?? DEFAULT_POKEMON_ZONE_URL),
-    berries: stripTrailingSlash(env.BERRIES_ZONE_URL ?? DEFAULT_BERRIES_ZONE_URL),
+    pokemon: normalizeZoneUrl(env.POKEMON_ZONE_URL ?? DEFAULT_POKEMON_ZONE_URL, 'POKEMON_ZONE_URL'),
+    berries: normalizeZoneUrl(env.BERRIES_ZONE_URL ?? DEFAULT_BERRIES_ZONE_URL, 'BERRIES_ZONE_URL'),
   }
 }
 

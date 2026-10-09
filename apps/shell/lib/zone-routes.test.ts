@@ -22,6 +22,21 @@ describe('resolveZoneRoutes', () => {
       pokemon: 'https://pokemon.example',
     })
   })
+
+  it('rejects a zone URL that already contains the zone path', () => {
+    expect(() =>
+      resolveZoneRoutes({ POKEMON_ZONE_URL: 'https://pokemon.example/pokemon' }),
+    ).toThrow(/POKEMON_ZONE_URL must be the zone's origin only/)
+    expect(() =>
+      resolveZoneRoutes({ BERRIES_ZONE_URL: 'https://berries.example/berries/' }),
+    ).toThrow(/BERRIES_ZONE_URL must be the zone's origin only/)
+  })
+
+  it('rejects a zone URL without a protocol', () => {
+    expect(() => resolveZoneRoutes({ POKEMON_ZONE_URL: 'pokemon.example' })).toThrow(
+      /must be an absolute URL/,
+    )
+  })
 })
 
 describe('buildZoneRewrites', () => {
