@@ -1,0 +1,22 @@
+# Keep the build context small and never bake a developer's machine state into the image.
+**/node_modules
+**/.next
+**/.turbo
+**/coverage
+.git
+.gitignore
+
+# Environment files stay on the host; the compose file supplies what the containers need.
+.env
+.env.*
+!.env.example
+
+# Local-only documentation and agent tooling.
+docs
+tasks
+CAPABILITY-MAP.md
+AGENTS.md
+.commandcode
+
+*.log
+.DS_Store

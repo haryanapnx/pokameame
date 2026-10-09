@@ -1,0 +1,68 @@
+# Local development stack: Postgres + migrations + all three Next.js apps.
+#
+#   pnpm docker:up      → build, migrate, then run the apps (http://localhost:3000)
+#   pnpm docker:down    → stop everything, keep the database volume
+#   pnpm docker:reset   → stop everything and drop the database volume
+#
+# The repository is bind-mounted into the app container, so edits hot-reload; dependencies live in the image, which is
+# why `pnpm install` needs to be re-run inside the container only after a dependency change:
+#
+#   docker compose build && docker compose up --renew-anon-volumes
+name: pokemon-explorer
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: pokemon
+      POSTGRES_PASSWORD: pokemon
+      POSTGRES_DB: pokemon
+    # 55432 on purpose: a host Postgres on 5432 stays untouched.
+    ports: ['55432:5432']
+    volumes: ['db-data:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U pokemon -d pokemon']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  migrate:
+    build: { context: ., dockerfile: Dockerfile.dev }
+    command: pnpm db:migrate
+    environment:
+      # The container database speaks no TLS, and sslmode=disable is passed through untouched by @poke/core.
+      DATABASE_URL: postgresql://pokemon:pokemon@db:5432/pokemon?sslmode=disable
+    depends_on:
+      db: { condition: service_healthy }
+    restart: 'no'
+
+  dev:
+    build: { context: ., dockerfile: Dockerfile.dev }
+    command: pnpm dev
+    ports: ['3000:3000', '3001:3001', '3002:3002']
+    environment:
+      # Point this at a Neon URL instead to develop against the deployed database.
+      DATABASE_URL: postgresql://pokemon:pokemon@db:5432/pokemon?sslmode=disable
+      # All three apps share this container, so the shell's rewrites keep using localhost, exactly like `pnpm dev`.
+      POKEMON_ZONE_URL: http://localhost:3001
+      BERRIES_ZONE_URL: http://localhost:3002
+      SHELL_ORIGIN: http://localhost:3000
+    volumes:
+      - .:/app
+      # Dependencies (and the turbo cache) stay in the image; these anonymous volumes stop the bind mount from hiding
+      # them. pnpm writes node_modules at the root and inside every workspace, hence one entry per package.
+      - /app/node_modules
+      - /app/apps/shell/node_modules
+      - /app/apps/pokemon/node_modules
+      - /app/apps/berries/node_modules
+      - /app/packages/core/node_modules
+      - /app/packages/ui/node_modules
+      - /app/packages/tsconfig/node_modules
+      - /app/packages/eslint-config/node_modules
+      - /app/packages/vitest-config/node_modules
+      - /app/.turbo
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+
+volumes:
+  db-data:

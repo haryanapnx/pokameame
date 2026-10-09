@@ -1,0 +1,27 @@
+# Development image for the full workspace (all three Next.js apps + tooling).
+#
+# The point of this image is that nobody needs Node, pnpm or Postgres installed on their machine: dependencies are
+# installed here, once, and `compose.yaml` bind-mounts the repository on top of it for hot reload.
+FROM node:22-bookworm-slim
+
+# Keep this in sync with the `packageManager` field in package.json (corepack is skipped on purpose: its bundled
+# version can refuse to fetch newer pnpm releases, and an explicit version is easier to read).
+RUN npm install --global pnpm@12.10.1
+
+WORKDIR /app
+
+# Install dependencies before copying the source, so this layer is reused whenever only code changes.
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/shell/package.json apps/shell/
+COPY apps/pokemon/package.json apps/pokemon/
+COPY apps/berries/package.json apps/berries/
+COPY packages/core/package.json packages/core/
+COPY packages/ui/package.json packages/ui/
+COPY packages/tsconfig/package.json packages/tsconfig/
+COPY packages/eslint-config/package.json packages/eslint-config/
+COPY packages/vitest-config/package.json packages/vitest-config/
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+
+CMD ["pnpm", "dev"]
