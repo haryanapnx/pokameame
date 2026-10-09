@@ -1,7 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "stream",
-  "globalEnv": ["NODE_ENV"],
+  "globalEnv": [
+    "NODE_ENV",
+    "POKEAPI_BASE_URL",
+    "DATABASE_URL",
+    "POKEMON_ZONE_URL",
+    "BERRIES_ZONE_URL",
+    "SHELL_ORIGIN"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

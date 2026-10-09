@@ -15,9 +15,12 @@
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "db:migrate": "tsx scripts/migrate.ts"
+    "db:migrate": "node --env-file-if-exists=.env --import tsx scripts/migrate.ts"
   },
   "devDependencies": {
+    "@poke/core": "workspace:*",
+    "@types/pg": "^8.23.1",
+    "pg": "^8.23.1",
     "prettier": "^3.3.3",
     "tsx": "^4.19.2",
     "turbo": "^2.3.3",
