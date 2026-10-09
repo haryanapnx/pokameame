@@ -1,3 +1,3 @@
 {
-  "ignoreCommand": "test -n \"$VERCEL_GIT_PREVIOUS_SHA\" && git diff --quiet \"$VERCEL_GIT_PREVIOUS_SHA\" HEAD -- apps/berries package.json turbo.json pnpm-lock.yaml pnpm-workspace.yaml packages/core packages/ui packages/tsconfig"
+  "ignoreCommand": "git -C \"$(git rev-parse --show-toplevel)\" diff --quiet \"${VERCEL_GIT_PREVIOUS_SHA:-HEAD~1}\" HEAD -- apps/berries package.json turbo.json pnpm-lock.yaml pnpm-workspace.yaml packages/core packages/ui packages/tsconfig"
 }
