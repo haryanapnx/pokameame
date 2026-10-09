@@ -72,3 +72,6 @@ export { SiteHeader } from './SiteHeader/SiteHeader'
 export type { SiteHeaderProps } from './SiteHeader/SiteHeader'
 
 export { Footer } from './Footer/Footer'
+
+export { RouteLoadingIndicator } from './RouteLoadingIndicator/RouteLoadingIndicator'
+export type { RouteLoadingIndicatorProps } from './RouteLoadingIndicator/RouteLoadingIndicator'

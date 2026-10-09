@@ -96,7 +96,9 @@ Everything renders on the server; only the smallest interactive leaf is a client
 | Type matchups / abilities / stats | Server | Derived from the cached `/type` and `/ability` reads |
 | `/pokemon/new`, `/berries/new` | Server shell + Client form | Form posts to a Server Action (`useActionState`, `useFormStatus`) |
 | Search inputs | **Client island** | Debounced; writes `?q=` inside `useTransition`; autocomplete via React Query |
-| `Dialog`, `Tabs`, `MobileMenu`, `SubmitButton` | **Client** | The only `'use client'` files in `@poke/ui` |
+| `Dialog`, `Tabs`, `MobileMenu`, `SubmitButton`, `RouteLoadingIndicator` | **Client** | The only `'use client'` files in
+  `@poke/ui`. The indicator exists because cross-zone moves are hard navigations: it shows a spinner from the click until
+  the next document streams |
 | `apps/shell/app/error.tsx` | **Client** | Next requires error boundaries to be client components |
 
 **List state is the URL** (`?page=`, `?q=`), which keeps results shareable, prefetchable, and lets the server cache its

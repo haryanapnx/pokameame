@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 
 import { QueryProvider } from '@poke/core/queries'
-import { SiteHeader, Footer } from '@poke/ui'
+import { RouteLoadingIndicator, SiteHeader, Footer } from '@poke/ui'
 
 import './globals.css'
 
@@ -15,6 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className="flex min-h-dvh flex-col bg-surface-muted font-sans text-content antialiased">
+        <RouteLoadingIndicator />
         <SiteHeader activeHref="/berries" />
         <main className="flex-1">
           <QueryProvider>{children}</QueryProvider>
